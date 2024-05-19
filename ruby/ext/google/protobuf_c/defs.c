@@ -153,6 +153,7 @@ static VALUE DescriptorPool_lookup(VALUE _self, VALUE name) {
   const upb_MessageDef* msgdef;
   const upb_EnumDef* enumdef;
   const upb_FieldDef* fielddef;
+  const upb_FileDef* filedef;
 
   msgdef = upb_DefPool_FindMessageByName(self->symtab, name_str);
   if (msgdef) {
@@ -169,7 +170,13 @@ static VALUE DescriptorPool_lookup(VALUE _self, VALUE name) {
     return get_enumdef_obj(_self, enumdef);
   }
 
+  filedef = upb_DefPool_FindFileByName(self->symtab, name_str);
+  if (filedef) {
+    return get_filedef_obj(_self, filedef);
+  }
+
   return Qnil;
+
 }
 
 /*
@@ -1334,6 +1341,7 @@ static VALUE get_filedef_obj(VALUE descriptor_pool, const upb_FileDef* def) {
 static VALUE get_oneofdef_obj(VALUE descriptor_pool, const upb_OneofDef* def) {
   return get_def_obj(descriptor_pool, def, cOneofDescriptor);
 }
+
 
 // -----------------------------------------------------------------------------
 // Shared functions
