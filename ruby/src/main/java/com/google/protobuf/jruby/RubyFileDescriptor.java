@@ -33,6 +33,7 @@
 package com.google.protobuf.jruby;
 
 import com.google.protobuf.CodedInputStream;
+import com.google.protobuf.DescriptorProtos.FileDescriptorProto;
 import com.google.protobuf.Descriptors.FileDescriptor;
 import com.google.protobuf.Descriptors.GenericDescriptor;
 import org.jruby.*;
@@ -97,6 +98,28 @@ public class RubyFileDescriptor extends RubyObject {
         msg,
         CodedInputStream.newInstance(
             fileDescriptor.getOptions().toByteString().toByteArray()), /*freeze*/
+        true);
+  }
+
+  /*
+   * call-seq:
+   *     FileDescriptor.to_proto => FileDescriptorProto
+   *
+   * Returns the `FileDescriptorProto` of the file.
+   */
+  @JRubyMethod(name = "to_proto")
+  public IRubyObject toProto(ThreadContext context) {
+    RubyDescriptorPool pool = (RubyDescriptorPool) RubyDescriptorPool.generatedPool(null, null);
+    RubyDescriptor descriptor =
+        (RubyDescriptor)
+            pool.lookup(context, context.runtime.newString("google.protobuf.FileDescriptorProto"));
+    RubyClass msgClass = (RubyClass) descriptor.msgclass(context);
+    RubyMessage msg = (RubyMessage) msgClass.newInstance(context, Block.NULL_BLOCK);
+    return msg.decodeBytes(
+        context,
+        msg,
+        CodedInputStream.newInstance(
+            fileDescriptor.toProto().toByteString().toByteArray()), /*freeze*/
         true);
   }
 
