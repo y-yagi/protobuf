@@ -140,6 +140,28 @@ public class RubyEnumDescriptor extends RubyObject {
         true);
   }
 
+  /*
+   * call-seq:
+   *     EnumDescriptor.to_proto => EnumDescriptorProto
+   *
+   * Returns the `EnumDescriptorProto` of enum type.
+   */
+  @JRubyMethod(name = "to_proto")
+  public IRubyObject toProto(ThreadContext context) {
+    RubyDescriptorPool pool = (RubyDescriptorPool) RubyDescriptorPool.generatedPool(null, null);
+    RubyDescriptor enumProtoDescriptor =
+        (RubyDescriptor)
+            pool.lookup(context, context.runtime.newString("google.protobuf.EnumDescriptorProto"));
+    RubyClass msgClass = (RubyClass) enumProtoDescriptor.msgclass(context);
+    RubyMessage msg = (RubyMessage) msgClass.newInstance(context, Block.NULL_BLOCK);
+    return msg.decodeBytes(
+        context,
+        msg,
+        CodedInputStream.newInstance(
+            descriptor.toProto().toByteString().toByteArray()), /*freeze*/
+        true);
+  }
+
   public boolean isValidValue(ThreadContext context, IRubyObject value) {
     EnumValueDescriptor enumValue;
 
