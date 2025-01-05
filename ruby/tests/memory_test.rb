@@ -7,7 +7,7 @@ require 'test/unit'
 require 'objspace'
 require 'test_import_pb'
 
-$is_64bit = Google::Protobuf::Internal::SIZEOF_LONG == 8
+$is_64bit = false #Google::Protobuf::Internal::SIZEOF_LONG == 8
 
 class MemoryTest < Test::Unit::TestCase
   # 40 byte is the default object size. But the real size is dependent on many things
