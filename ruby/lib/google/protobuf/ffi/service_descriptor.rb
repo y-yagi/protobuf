@@ -73,14 +73,14 @@ module Google
           size_ptr = ::FFI::MemoryPointer.new(:size_t, 1)
           temporary_arena = Google::Protobuf::FFI.create_arena
           buffer = Google::Protobuf::FFI.service_options(self, size_ptr, temporary_arena)
-          Google::Protobuf::ServiceOptions.decode(buffer.read_string_length(size_ptr.read(:size_t)).force_encoding("ASCII-8BIT").freeze).freeze
+          Google::Protobuf::ServiceOptions.decode(buffer.read_string_length(size_ptr.read(:size_t)).force_encoding("ASCII-8BIT").freeze)
         end
       end
 
       private
 
       def initialize(service_def, descriptor_pool)
-        @service_def = service_def 
+        @service_def = service_def
         @descriptor_pool = descriptor_pool
       end
 
