@@ -14,18 +14,24 @@ class MemoryTest < Test::Unit::TestCase
   # such as arch etc, so there's no point trying to assert the exact return value here.
   # We merely assert that we return something other than the default.
   def test_objspace_memsize_of_arena
+    return unless ObjectSpace.respond_to?(:memsize_of)
+
     if $is_64bit
       assert_operator 40, :<, ObjectSpace.memsize_of(Google::Protobuf::Internal::Arena.new)
     end
   end
 
   def test_objspace_memsize_of_message
+    return unless ObjectSpace.respond_to?(:memsize_of)
+
     if $is_64bit
       assert_operator 40, :<, ObjectSpace.memsize_of(FooBar::TestImportedMessage.new)
     end
   end
 
   def test_objspace_memsize_of_map
+    return unless ObjectSpace.respond_to?(:memsize_of)
+
     if $is_64bit
       assert_operator 40, :<, ObjectSpace.memsize_of(Google::Protobuf::Map.new(:string, :int32))
     end
