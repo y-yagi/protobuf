@@ -92,7 +92,15 @@ public class RubyDescriptor extends RubyObject {
    */
   @JRubyMethod
   public IRubyObject lookup(ThreadContext context, IRubyObject fieldName) {
-    return Helpers.nullToNil(fieldDescriptors.get(fieldName), context.nil);
+    IRubyObject result =Helpers.nullToNil(fieldDescriptors.get(fieldName), context.nil);
+    if (result == context.nil) {
+      System.out.println("Descriptor not found in get: " + fieldName + " name: " + name);
+      for (Map.Entry<IRubyObject, RubyFieldDescriptor> entry : fieldDescriptors.entrySet()) {
+        System.out.println("key: " + entry.getKey());
+        System.out.println("Value: " + entry.getValue());
+      }
+    }
+    return result;
   }
 
   /*
@@ -189,11 +197,15 @@ public class RubyDescriptor extends RubyObject {
     fieldDescriptors = new HashMap<IRubyObject, RubyFieldDescriptor>();
     oneofDescriptors = new HashMap<IRubyObject, RubyOneofDescriptor>();
 
+    System.out.println("Descriptor: " + descriptor.getName());
     for (FieldDescriptor fieldDescriptor : descriptor.getFields()) {
       RubyFieldDescriptor fd =
           (RubyFieldDescriptor) cFieldDescriptor.newInstance(context, Block.NULL_BLOCK);
       fd.setDescriptor(context, fieldDescriptor, pool);
       fieldDescriptors.put(runtime.newString(fieldDescriptor.getName()), fd);
+      if (descriptor.getName() == "TestOptionsType") {
+        System.out.println("FieldDescriptor: " + fieldDescriptor.getName());
+      }
       cache.put(fieldDescriptor, fd);
     }
 

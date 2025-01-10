@@ -34,6 +34,8 @@ class ServiceTest < Test::Unit::TestCase
 
   def test_service_options_extensions
     extension_field = Google::Protobuf::DescriptorPool.generated_pool.lookup('service_test_protos.test_options')
+    pp extension_field
+    pp @test_service.options
     assert_equal 8325, extension_field.get(@test_service.options).int_option_value
   end
 

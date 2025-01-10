@@ -1361,6 +1361,7 @@ public class RubyMessage extends RubyObject {
   private IRubyObject getDescriptorForField(
       ThreadContext context, FieldDescriptor fieldDescriptor) {
     RubyDescriptor thisRbDescriptor = (RubyDescriptor) getDescriptor(context, metaClass);
+//    System.out.println("thisRbDescriptr: " + metaClass);
     RubyFieldDescriptor fd =
         (RubyFieldDescriptor)
             thisRbDescriptor.lookup(context, context.runtime.newString(fieldDescriptor.getName()));

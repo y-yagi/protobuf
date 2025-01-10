@@ -198,6 +198,7 @@ public class RubyDescriptorPool extends RubyObject {
     RubyFieldDescriptor des =
         (RubyFieldDescriptor) cFieldDescriptor.newInstance(context, Block.NULL_BLOCK);
     des.setName(name);
+    System.out.println("(registerExtension)FieldDescriptor: " + name);
     des.setDescriptor(context, descriptor, this);
     // For MessageSet extensions, there is the possibility of a name conflict. Prefer the Message.
     symtab.putIfAbsent(name, des);
